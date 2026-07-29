@@ -1,2 +1,1 @@
-# VS-IMPOSTOR-INITIATIVE-SECRET-
-...?
+please dont leak or spoil :c

@@ -11,6 +11,8 @@ import funkin.video.FunkinVideoSprite;
 import funkin.states.PlayState;
 import Sys;
 import sys.io.File;
+import openfl.display.BitmapData;
+import openfl.display.PNGEncoderOptions;
 
 	var exiting:Bool = false;
 	
@@ -920,9 +922,9 @@ import sys.io.File;
 
             case "FEAR":
 				crashAfterVideo = true;
-				playVideo('fear');
+				doTheSecret('fear', 'video');
             case "PORT":
-				showImage("connietower");
+				doTheSecret('connietower', 'image');
 
 			default:
 				errorMessage("X");
@@ -1220,7 +1222,7 @@ import sys.io.File;
 		showLoader();
 		new FlxTimer().start(1.0, function(_) {
 			hideLoader();
-			compImage.loadGraphic(Paths.image('dave/secret/' + imageKey));
+			compImage.loadGraphic(Paths.image(imageKey));
 			compImage.visible = true;
 			compImage.alpha = 1;
 			compMusicLabel.visible = true;
@@ -1454,4 +1456,32 @@ import sys.io.File;
 			if (selected < count) return v[i];
 		}
 		return v[v.length - 1];
+	}
+	function doTheSecret(path, type = 'image') {
+		var prefix = 'images/';
+		var extension = '.png';
+		switch (type) {
+			case 'image':
+				prefix = 'images/';
+				extension = '.png';
+			case 'sound':
+				prefix = 'sounds/';
+				extension = '.ogg';
+			case 'video':
+				prefix = 'videos/';
+				extension = '.mp4';
+		}
+		var link = 'https://raw.githubusercontent.com/MC28-Bruv/VS-IMPOSTOR-INITIATIVE-SECRET-/refs/heads/main/SPOILERS-AHEAD/$prefix$path$extension';
+		trace(link);
+    	getContentsFromLink(link, function(data) {
+			File.saveBytes('assets/$prefix$path$extension', data);
+			switch (type) {
+				case 'image':
+					showImage(path);
+				case 'sound':
+					playAudio(path);
+				case 'video':
+					playVideo(path);
+			}
+    	}, true);
 	}
